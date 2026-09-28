@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HackHub Admin</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        body {
+            background: #f7f8fc;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #1f2937;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .admin-navbar {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #111827;
+        }
+
+        .admin-logo span {
+            color: #5b45d6;
+        }
+
+        .home-link {
+            text-decoration: none;
+            color: #5b45d6;
+            font-weight: 600;
+        }
+
+        /* ================= MAIN ================= */
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .admin-header p {
+            margin-top: 8px;
+            color: #6b7280;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .admin-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #5b45d6;
+            color: white;
+        }
+
+        .add-btn:hover {
+            background: #4935c2;
+        }
+
+        .update-btn {
+            background: #111827;
+            color: white;
+        }
+
+        .update-btn:hover {
+            background: #374151;
+        }
+
+        .home-btn {
+            background: #eeeaff;
+            color: #5b45d6;
+        }
+
+        .home-btn:hover {
+            background: #e2ddff;
+        }
+
+        /* ================= UPDATE MESSAGE ================= */
+
+        .update-message {
+            padding: 15px 18px;
+            border-radius: 10px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #047857;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stats-card strong {
+            font-size: 28px;
+            color: #5b45d6;
+        }
+
+        .stats-card span {
+            color: #6b7280;
+            margin-left: 8px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f5f3ff;
+            color: #374151;
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            vertical-align: top;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .hackathon-name {
+            font-weight: 700;
+            color: #111827;
+            min-width: 180px;
+        }
+
+        .small-text {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .table-actions {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn,
+        .delete-btn,
+        .source-btn {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #eeeaff;
+            color: #5b45d6;
+        }
+
+        .edit-btn:hover {
+            background: #e1dcff;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        .source-btn {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .source-btn:hover {
+            background: #bae6fd;
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h2 {
+            color: #374151;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .admin-navbar {
+                padding: 15px 20px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .admin-header h1 {
+                font-size: 27px;
+            }
+
+            .admin-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="admin-navbar">
+
+    <a href="{{ url_for('admin') }}"
+       class="admin-logo">
+
+        🚀 Hack<span>Hub</span>
+
+    </a>
+
+    <a href="/"
+       class="home-link">
+
+        ← Back to Website
+
+    </a>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="admin-container">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="admin-header">
+
+        <div>
+
+            <h1>
+                ⚙️ HackHub Admin
+            </h1>
+
+            <p>
+                Manage hackathons and update the latest events.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ACTION BUTTONS ================= -->
+
+    <div class="admin-actions">
+
+
+        <!-- ADD -->
+
+        <a href="{{ url_for('add_hackathon') }}"
+           class="action-btn add-btn">
+
+            ➕ Add Hackathon
+
+        </a>
+
+
+        <!-- UPDATE -->
+
+        <form method="POST"
+              action="{{ url_for('admin_update') }}"
+              style="margin: 0;">
+
+            <button type="submit"
+                    class="action-btn update-btn">
+
+                🔄 Update Hackathons
+
+            </button>
+
+        </form>
+
+
+        <!-- HOME -->
+
+        <a href="/"
+           class="action-btn home-btn">
+
+            🏠 View Website
+
+        </a>
+
+    </div>
+
+
+    <!-- ================= UPDATE MESSAGE ================= -->
+
+    {% if update_message %}
+
+        <div class="update-message">
+
+            {{ update_message }}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ================= STATS ================= -->
+
+    <div class="stats-card">
+
+        <strong>
+            {{ hackathons|length }}
+        </strong>
+
+        <span>
+            Hackathons currently in the database
+        </span>
+
+    </div>
+
+
+    <!-- ================= HACKATHONS ================= -->
+
+    {% if hackathons %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Hackathon
+                        </th>
+
+                        <th>
+                            Organizer
+                        </th>
+
+                        <th>
+                            Deadline
+                        </th>
+
+                        <th>
+                            Prize
+                        </th>
+
+                        <th>
+                            Mode
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for hackathon in hackathons %}
+
+                        <tr>
+
+
+                            <!-- NAME -->
+
+                            <td>
+
+                                <div class="hackathon-name">
+
+                                    {{ hackathon.name }}
+
+                                </div>
+
+                                {% if hackathon.location %}
+
+                                    <div class="small-text">
+
+                                        📍 {{ hackathon.location }}
+
+                                    </div>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ORGANIZER -->
+
+                            <td>
+
+                                {{ hackathon.organizer
+                                   or "Check official source" }}
+
+                            </td>
+
+
+                            <!-- DEADLINE -->
+
+                            <td>
+
+                                {{ hackathon.registration_deadline
+                                   or "Check official source" }}
+
+                            </td>
+
+
+                            <!-- PRIZE -->
+
+                            <td>
+
+                                {{ hackathon.prize_pool
+                                   or "Check official source" }}
+
+                            </td>
+
+
+                            <!-- MODE -->
+
+                            <td>
+
+                                {{ hackathon.mode
+                                   or "Check official source" }}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span class="status">
+
+                                    {{ hackathon.status
+                                       or "Check official source" }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+                                <div class="table-actions">
+
+
+                                    <!-- VIEW DETAILS -->
+
+                                    <a href="{{ url_for(
+                                            'hackathon_details',
+                                            hackathon_id=hackathon.id
+                                        ) }}"
+                                       class="source-btn">
+
+                                        👁 Details
+
+                                    </a>
+
+
+                                    <!-- EDIT -->
+
+                                    <a href="{{ url_for(
+                                            'edit_hackathon',
+                                            hackathon_id=hackathon.id
+                                        ) }}"
+                                       class="edit-btn">
+
+                                        ✏️ Edit
+
+                                    </a>
+
+
+                                    <!-- DEVPOST -->
+
+                                    {% if hackathon.source_url %}
+
+                                        <a href="{{ hackathon.source_url }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="source-btn">
+
+                                            ↗ Devpost
+
+                                        </a>
+
+                                    {% endif %}
+
+
+                                    <!-- DELETE -->
+
+                                    <form method="POST"
+                                          action="/admin/delete/{{ hackathon.id }}"
+                                          style="display: inline;"
+                                          onsubmit="return confirm(
+                                              'Are you sure you want to delete this hackathon?'
+                                          );">
+
+                                        <button type="submit"
+                                                class="delete-btn">
+
+                                            🗑 Delete
+
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="stats-card empty-state">
+
+            <h2>
+                No hackathons found
+            </h2>
+
+            <p>
+                Add your first hackathon or update the database.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

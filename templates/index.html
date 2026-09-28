@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HackHub | Discover Hackathons</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            🚀 HackHub
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/">
+                Hackathons
+            </a>
+
+            <a href="#">
+                About
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Discover Your Next
+                <span>Hackathon</span>
+            </h1>
+
+            <p>
+                Find the latest hackathons, deadlines,
+                prizes and opportunities in one place.
+            </p>
+            <div class="last-updated">
+                🔄 Last updated: {{ last_updated }}
+            </div>
+
+
+            <!-- ================= SEARCH ================= -->
+
+            <form
+                class="search"
+                method="GET"
+                action="/"
+            >
+
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ search or '' }}"
+                    placeholder="Search hackathons..."
+                    autocomplete="off"
+                >
+
+                <button type="submit">
+                    Search 🔍
+                </button>
+
+            </form>
+
+
+
+            <!-- ================= FILTERS ================= -->
+
+            <div class="filters">
+
+                <a
+                    href="/"
+                    class="filter-btn"
+                >
+                    All
+                </a>
+
+
+                <a
+                    href="/?mode=Online"
+                    class="filter-btn"
+                >
+                    🌐 Online
+                </a>
+
+
+                <a
+                    href="/?mode=Offline"
+                    class="filter-btn"
+                >
+                    🏢 Offline
+                </a>
+
+
+                <a
+                    href="/?mode=Hybrid"
+                    class="filter-btn"
+                >
+                    🔄 Hybrid
+                </a>
+
+
+                <a
+                    href="/?technology=AI"
+                    class="filter-btn"
+                >
+                    🤖 AI / ML
+                </a>
+
+
+                <a
+                    href="/?technology=Web"
+                    class="filter-btn"
+                >
+                    💻 Web
+                </a>
+
+
+                <a
+                    href="/?technology=Cybersecurity"
+                    class="filter-btn"
+                >
+                    🔐 Cybersecurity
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= HACKATHONS ================= -->
+
+    <section class="hackathons">
+
+
+        <!-- SEARCH RESULT TITLE -->
+
+        {% if search %}
+
+            <h2>
+                🔎 Search Results
+            </h2>
+
+            <p class="search-result">
+
+                Showing results for:
+
+                <strong>
+                    "{{ search }}"
+                </strong>
+
+            </p>
+
+        {% elif mode %}
+
+            <h2>
+                🌐 {{ mode }} Hackathons
+            </h2>
+
+        {% elif technology %}
+
+            <h2>
+                💻 {{ technology }} Hackathons
+            </h2>
+
+        {% else %}
+
+    <h2>
+        🔥 Closing Soon
+    </h2>
+
+    <p class="section-subtitle">
+        Hackathons with the nearest registration deadlines
+    </p>
+
+        {% endif %}
+
+        <!-- ================= HACKATHON CARDS ================= -->
+
+        <div class="cards">
+
+
+            {% for hackathon in hackathons %}
+
+
+                <div class="card">
+
+
+                    <!-- TECHNOLOGIES -->
+
+                    <span class="tag">
+
+                        {{ hackathon.technologies }}
+
+                    </span>
+
+
+
+                    <!-- HACKATHON NAME -->
+
+                    <h3>
+
+                        {{ hackathon.name }}
+
+                    </h3>
+
+
+
+                    <!-- DESCRIPTION -->
+
+                    <p>
+
+                        {{ hackathon.description }}
+
+                    </p>
+
+
+
+                    <!-- ORGANIZER -->
+
+                    <p>
+
+                        🏢
+
+                        <strong>
+                            Organizer:
+                        </strong>
+
+                        {{ hackathon.organizer }}
+
+                    </p>
+
+                    <div class="hackathon-info">
+
+    {% if hackathon.prize_pool
+          and hackathon.prize_pool != "Check official source" %}
+        <p>
+            🏆 <strong>Prize:</strong>
+            {{ hackathon.prize_pool }}
+        </p>
+    {% endif %}
+
+
+    {% if hackathon.registration_deadline
+          and hackathon.registration_deadline != "Check official source"
+          and hackathon.registration_deadline != "Not available" %}
+
+        <p>
+            ⏰ <strong>Deadline:</strong>
+            {{ hackathon.registration_deadline }}
+        </p>
+
+        <div
+            class="deadline-box"
+            data-deadline="{{ hackathon.registration_deadline }}"
+        >
+            <p
+                class="countdown"
+                data-deadline="{{ hackathon.registration_deadline }}"
+            >
+                Calculating...
+            </p>
+        </div>
+
+    {% endif %}
+
+
+    {% if hackathon.mode
+          and hackathon.mode != "Check official source" %}
+        <p>
+            🌐 <strong>Mode:</strong>
+            {{ hackathon.mode }}
+        </p>
+    {% endif %}
+
+
+    {% if hackathon.location
+      and hackathon.location != "Check official source"
+      and hackathon.location != "Online"
+      and hackathon.location != "online" %}
+    <p>📍 <strong>Location:</strong> {{ hackathon.location }}</p>
+    {% endif %}
+
+</div>
+
+
+
+                    <!-- STATUS -->
+
+                    <p>
+
+                        {% if hackathon.status == "Open" %}
+
+                            🟢
+
+                            <strong>
+                                Registration Open
+                            </strong>
+
+                        {% else %}
+
+                            🔴
+
+                            <strong>
+                                {{ hackathon.status }}
+                            </strong>
+
+                        {% endif %}
+
+                    </p>
+
+
+
+                    <!-- VIEW DETAILS -->
+
+                    <div class="card-buttons">
+
+    <a
+        href="{{ url_for('hackathon_details', hackathon_id=hackathon.id) }}"
+        class="details-btn"
+    >
+        View Details →
+    </a>
+
+    {% if hackathon.source_url %}
+
+        <a
+            href="{{ hackathon.source_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="source-btn"
+        >
+            View on Devpost ↗
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+
+            <!-- ================= NO RESULTS ================= -->
+
+            {% if not hackathons %}
+
+
+                <div class="no-results">
+
+                    <h3>
+                        😕 No Hackathons Found
+                    </h3>
+
+                    <p>
+
+                        We couldn't find any hackathons
+                        matching your search or filter.
+
+                    </p>
+
+                    <p>
+
+                        Try searching for:
+
+                        <strong>
+                            AI, Python, Web,
+                            Cybersecurity or IoT
+                        </strong>
+
+                    </p>
+
+
+                    <a
+                        href="/"
+                        class="back-home"
+                    >
+
+                        View All Hackathons
+
+                    </a>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <h3>
+                🚀 HackHub
+            </h3>
+
+            <p>
+                Discover hackathons.
+                Build amazing projects.
+                Create the future.
+            </p>
+
+            <p class="copyright">
+
+                © 2026 HackHub.
+                All rights reserved.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+    <script>
+function parseDeadline(dateText) {
+    if (!dateText) return null;
+
+    const parts = dateText.trim().split(" ");
+
+    if (parts.length !== 3) return null;
+
+    const day = parseInt(parts[0]);
+    const monthName = parts[1].toLowerCase();
+    const year = parseInt(parts[2]);
+
+    const months = {
+        january: 0,
+        february: 1,
+        march: 2,
+        april: 3,
+        may: 4,
+        june: 5,
+        july: 6,
+        august: 7,
+        september: 8,
+        october: 9,
+        november: 10,
+        december: 11
+    };
+
+    if (months[monthName] === undefined) {
+        return null;
+    }
+
+    return new Date(
+        year,
+        months[monthName],
+        day,
+        23,
+        59,
+        59
+    );
+}
+
+
+function updateCountdowns() {
+
+    const countdowns =
+        document.querySelectorAll(".countdown");
+
+    console.log("Countdown elements found:", countdowns.length);
+
+    countdowns.forEach(function(element) {
+
+        const deadlineText =
+            element.getAttribute("data-deadline");
+
+        console.log("Deadline:", deadlineText);
+
+        if (!deadlineText) {
+            element.textContent =
+                "⚠️ Deadline unavailable";
+            return;
+        }
+
+        const deadline =
+            parseDeadline(deadlineText);
+
+        if (!deadline) {
+            element.textContent =
+                "⚠️ Countdown unavailable";
+            return;
+        }
+
+        const now = new Date();
+
+        const difference =
+            deadline.getTime() - now.getTime();
+
+        if (difference <= 0) {
+            element.textContent =
+                "🔴 Registration Closed";
+
+            element.classList.add("closed");
+            return;
+        }
+
+        const totalSeconds =
+            Math.floor(difference / 1000);
+
+        const days =
+            Math.floor(totalSeconds / 86400);
+
+        const hours =
+            Math.floor(
+                (totalSeconds % 86400) / 3600
+            );
+
+        const minutes =
+            Math.floor(
+                (totalSeconds % 3600) / 60
+            );
+
+        const seconds =
+            totalSeconds % 60;
+
+
+        if (days > 0) {
+
+            element.textContent =
+                "🔥 " +
+                days +
+                " days " +
+                hours +
+                " hours left";
+
+        } else {
+
+            element.textContent =
+                "⚡ " +
+                hours +
+                "h " +
+                minutes +
+                "m " +
+                seconds +
+                "s left";
+        }
+    });
+}
+
+
+updateCountdowns();
+
+setInterval(updateCountdowns, 1000);
+</script>
+
+</body>
+</html>

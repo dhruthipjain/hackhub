@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ hackathon.name }} | HackHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <h2>🚀 HackHub</h2>
+
+        <div>
+
+            <a href="/">Home</a>
+            <a href="/">Hackathons</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- DETAILS -->
+
+    <section class="details-container">
+
+        <div class="details-header">
+
+            <span class="tag">
+                {{ hackathon.technologies }}
+            </span>
+
+            <h1>
+                {{ hackathon.name }}
+            </h1>
+
+            <p class="organizer">
+                🏢 Organized by {{ hackathon.organizer }}
+            </p>
+
+        </div>
+
+
+        <div class="details-grid">
+
+
+            <!-- MAIN INFORMATION -->
+
+            <div class="main-details">
+
+                <h2>📋 About the Hackathon</h2>
+
+                <p>
+                    {{ hackathon.description }}
+                </p>
+
+
+                <h2>📅 Important Dates</h2>
+
+                <div class="detail-box">
+
+                    <p>
+                        ⏰
+                        <strong>
+                            Registration Deadline:
+                        </strong>
+
+                        {{ hackathon.registration_deadline }}
+                    </p>
+
+                    <p>
+                        📅
+                        <strong>
+                            Event Date:
+                        </strong>
+
+                        {{ hackathon.event_date }}
+                    </p>
+
+                </div>
+
+
+                <h2>🎯 Eligibility</h2>
+
+                <p>
+                    {{ hackathon.eligibility }}
+                </p>
+
+
+                <h2>👥 Team Size</h2>
+
+                <p>
+                    {{ hackathon.team_size }}
+                </p>
+
+
+                <h2>💻 Technologies</h2>
+
+                <p>
+                    {{ hackathon.technologies }}
+                </p>
+
+            </div>
+
+
+            <!-- SIDE INFORMATION -->
+
+            <div class="side-details">
+
+                <div class="info-box">
+
+                    <h3>🏆 Prize Pool</h3>
+
+                    <p>
+                        {{ hackathon.prize_pool }}
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>🌐 Mode</h3>
+
+                    <p>
+                        {{ hackathon.mode }}
+                    </p>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <h3>📍 Location</h3>
+
+                    <p>
+                        {{ hackathon.location }}
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ hackathon.registration_url }}"
+                    target="_blank"
+                    class="register-btn"
+                >
+                    Register Now →
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

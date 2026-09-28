@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Hackathon | HackHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<nav>
+
+    <h2>🚀 HackHub Admin</h2>
+
+    <div>
+
+        <a href="/admin">
+            Dashboard
+        </a>
+
+        <a href="/">
+            Website
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<section class="form-container">
+
+
+    <div class="form-header">
+
+        <h1>
+            Edit Hackathon
+        </h1>
+
+        <p>
+            Update the hackathon information.
+        </p>
+
+    </div>
+
+
+
+    <form
+        method="POST"
+        class="hackathon-form"
+    >
+
+
+        <div class="form-group">
+
+            <label>
+                Hackathon Name
+            </label>
+
+            <input
+                type="text"
+                name="name"
+                value="{{ hackathon.name }}"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Organizer
+            </label>
+
+            <input
+                type="text"
+                name="organizer"
+                value="{{ hackathon.organizer }}"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                rows="4"
+                required
+            >{{ hackathon.description }}</textarea>
+
+        </div>
+
+
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    Registration Deadline
+                </label>
+
+                <input
+                    type="text"
+                    name="registration_deadline"
+                    value="{{ hackathon.registration_deadline }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Event Date
+                </label>
+
+                <input
+                    type="text"
+                    name="event_date"
+                    value="{{ hackathon.event_date }}"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    Prize Pool
+                </label>
+
+                <input
+                    type="text"
+                    name="prize_pool"
+                    value="{{ hackathon.prize_pool }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Team Size
+                </label>
+
+                <input
+                    type="text"
+                    name="team_size"
+                    value="{{ hackathon.team_size }}"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-row">
+
+
+            <div class="form-group">
+
+                <label>
+                    Mode
+                </label>
+
+                <select name="mode">
+
+                    <option value="Online"
+                        {% if hackathon.mode == "Online" %}
+                        selected
+                        {% endif %}
+                    >
+                        Online
+                    </option>
+
+                    <option value="Offline"
+                        {% if hackathon.mode == "Offline" %}
+                        selected
+                        {% endif %}
+                    >
+                        Offline
+                    </option>
+
+                    <option value="Hybrid"
+                        {% if hackathon.mode == "Hybrid" %}
+                        selected
+                        {% endif %}
+                    >
+                        Hybrid
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    name="location"
+                    value="{{ hackathon.location }}"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Eligibility
+            </label>
+
+            <textarea
+                name="eligibility"
+                rows="3"
+                required
+            >{{ hackathon.eligibility }}</textarea>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Technologies
+            </label>
+
+            <input
+                type="text"
+                name="technologies"
+                value="{{ hackathon.technologies }}"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Registration URL
+            </label>
+
+            <input
+                type="url"
+                name="registration_url"
+                value="{{ hackathon.registration_url }}"
+                required
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Source URL
+            </label>
+
+            <input
+                type="url"
+                name="source_url"
+                value="{{ hackathon.source_url }}"
+                required
+            >
+
+        </div>
+
+
+
+        <button
+            type="submit"
+            class="submit-btn"
+        >
+
+            💾 Save Changes
+
+        </button>
+
+
+    </form>
+
+
+</section>
+
+
+</body>
+
+</html>
