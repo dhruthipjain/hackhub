@@ -9,12 +9,13 @@ from models.hackathon import db, Hackathon
 # ============================================================
 # FLASK CONFIGURATION
 # ============================================================
+import os
+from flask import Flask
 
 app = Flask(__name__)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hackhub.db"
-
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(app.root_path, "hackhub.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
