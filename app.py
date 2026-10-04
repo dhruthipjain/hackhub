@@ -13,7 +13,7 @@ from models.hackathon import db, Hackathon
 app = Flask(__name__)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hackhub.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../hackhub.db"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
